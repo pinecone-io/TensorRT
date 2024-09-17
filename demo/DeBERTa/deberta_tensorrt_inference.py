@@ -301,10 +301,10 @@ def build_engine():
         # by default batch dim set as 1 for all min/opt/max. If there are batch need, change the value for opt and max accordingly
         profile = TRT_BUILDER.create_optimization_profile()
         batch_size = 16
-        profile.set_shape("input_ids", (batch_size,seq_len), (batch_size,seq_len), (batch_size,seq_len))
-        profile.set_shape("attention_mask", (batch_size,seq_len), (batch_size,seq_len), (batch_size,seq_len))
+        profile.set_shape("input_ids", (1,seq_len), (batch_size,seq_len), (batch_size,seq_len))
+        profile.set_shape("attention_mask", (1,seq_len), (batch_size,seq_len), (batch_size,seq_len))
         config.add_optimization_profile(profile)
-        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 16384 * (1 << 20)) # 4096 MiB
+        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 16384 * (1 << 20)) # 16384 MiB
 
         # precision
         if precision == 'fp32':
