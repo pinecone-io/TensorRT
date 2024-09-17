@@ -332,7 +332,7 @@ def test_engine():
         model = TRTModel(engine_filename)
 
         ## psuedo-random input test
-        batch_size = 1
+        batch_size = 16
         seq_len = model.engine.get_tensor_shape(model.engine.get_tensor_name(0))[1]
         vocab = 128203
         gpu = torch.device('cuda')
