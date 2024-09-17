@@ -100,7 +100,7 @@ def export():
                      (input_ids, attention_mask), # model inputs
                      onnx_filename,
                      export_params=True,
-                     opset_version=13,
+                     opset_version=17,
                      do_constant_folding=True,
                      input_names = input_names,
                      output_names = output_names,
