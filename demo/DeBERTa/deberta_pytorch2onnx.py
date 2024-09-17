@@ -79,7 +79,7 @@ def export():
         deberta_model = DebertaV2ForSequenceClassification.from_pretrained(model_variant)
         deberta_config = DebertaV2Config.from_pretrained(model_variant)
 
-        batch_size = 1
+        batch_size = 10
         seq_len = deberta_config.max_position_embeddings
         vocab_size = deberta_config.vocab_size
 
