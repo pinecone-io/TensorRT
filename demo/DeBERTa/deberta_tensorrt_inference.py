@@ -304,7 +304,7 @@ def build_engine():
         profile.set_shape("input_ids", (batch_size,seq_len), (batch_size,seq_len), (batch_size,seq_len))
         profile.set_shape("attention_mask", (batch_size,seq_len), (batch_size,seq_len), (batch_size,seq_len))
         config.add_optimization_profile(profile)
-        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 4096 * (1 << 20)) # 4096 MiB
+        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 16384 * (1 << 20)) # 4096 MiB
 
         # precision
         if precision == 'fp32':
