@@ -295,7 +295,7 @@ def build_engine():
         ## build TRT engine (configuration options at: https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/BuilderConfig.html#ibuilderconfig)
         config = TRT_BUILDER.create_builder_config()
 
-        seq_len = network.get_input(0).shape[1]
+        seq_len = 512
 
         # handle dynamic shape (min/opt/max): https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#work_dynamic_shapes
         # by default batch dim set as 1 for all min/opt/max. If there are batch need, change the value for opt and max accordingly
@@ -333,7 +333,7 @@ def test_engine():
 
         ## psuedo-random input test
         batch_size = 16
-        seq_len = model.engine.get_tensor_shape(model.engine.get_tensor_name(0))[1]
+        seq_len = 512
         vocab = 128203
         gpu = torch.device('cuda')
         torch.manual_seed(0) # make sure in each test the seed are the same
