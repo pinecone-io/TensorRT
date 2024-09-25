@@ -91,9 +91,9 @@ def export():
     attention_mask = torch.randint(0, 2, (batch_size, seq_len), dtype=torch.long, device=gpu)
     input_names = ['input_ids', 'attention_mask']
     output_names = ['output']
-    dynamic_axes={'input_ids'   : {0 : 'batch_size'},
-                  'attention_mask'   : {0 : 'batch_size'},
-                  'output' : {0 : 'batch_size'}}
+    dynamic_axes={'input_ids'   : {0 : 'batch_size', 1 : 'seq_len'},
+                'attention_mask'   : {0 : 'batch_size', 1 : 'seq_len'},
+                'output' : {0 : 'batch_size', 1 : 'seq_len'}}
 
     # ONNX export
     torch.onnx.export(deberta_model, # model
