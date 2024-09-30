@@ -295,15 +295,16 @@ def build_engine():
         ## build TRT engine (configuration options at: https://docs.nvidia.com/deeplearning/tensorrt/api/python_api/infer/Core/BuilderConfig.html#ibuilderconfig)
         config = TRT_BUILDER.create_builder_config()
 
-        seq_len = network.get_input(0).shape[1]
+        seq_len = 512
 
         # handle dynamic shape (min/opt/max): https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#work_dynamic_shapes
         # by default batch dim set as 1 for all min/opt/max. If there are batch need, change the value for opt and max accordingly
         profile = TRT_BUILDER.create_optimization_profile()
-        profile.set_shape("input_ids", (1,seq_len), (1,seq_len), (1,seq_len))
-        profile.set_shape("attention_mask", (1,seq_len), (1,seq_len), (1,seq_len))
+        batch_size = 100
+        profile.set_shape("input_ids", (1,1), (16,10), (batch_size,seq_len))
+        profile.set_shape("attention_mask", (1,1), (16,seq_len), (batch_size,seq_len))
         config.add_optimization_profile(profile)
-        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 4096 * (1 << 20)) # 4096 MiB
+        config.set_memory_pool_limit(trt.MemoryPoolType.WORKSPACE, 16384 * (1 << 20)) # 16384 MiB
 
         # precision
         if precision == 'fp32':
@@ -331,8 +332,8 @@ def test_engine():
         model = TRTModel(engine_filename)
 
         ## psuedo-random input test
-        batch_size = 1
-        seq_len = model.engine.get_tensor_shape(model.engine.get_tensor_name(0))[1]
+        batch_size = 16
+        seq_len = 512
         vocab = 128203
         gpu = torch.device('cuda')
         torch.manual_seed(0) # make sure in each test the seed are the same
